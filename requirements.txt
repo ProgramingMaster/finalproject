@@ -1,4 +1,6 @@
-Gunicorn
+cs50
 Flask
 Flask-Session
+Gunicorn
+psycopg2
 requests
