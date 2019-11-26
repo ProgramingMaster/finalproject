@@ -89,8 +89,14 @@ def signup():
             return render_template("signup.html", err="must provide password")
 
         # Ensure password was submitted
-        if request.form.get("confirmation") is not password:
+        if not request.form.get("confirmation") == password:
             return render_template("signup.html", err="password and confimation password don't match")
+
+        user = db.execute("SELECT * FROM users WHERE username = :username",
+                          username=request.form.get("username"))
+
+        if len(user) != 0:
+            return render_template("signup.html", err="username is not available")
 
         userId = db.execute("INSERT INTO users (username, hash) VALUES (:username, :passwordHash)",
                     username=username, passwordHash=generate_password_hash(password))
