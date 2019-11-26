@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    signup
+{% endblock %}
+
+{% block main %}
+    <form action="/create" method="post">
+        <div class="form-group">
+            <input class="form-control" name="name" type="text" placeholder="Name of workout">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="current" type="number" placeholder="Current weight">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+{% endblock %}

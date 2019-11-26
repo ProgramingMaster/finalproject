@@ -1,5 +1,45 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    index
+{% endblock %}
+
 {% block main %}
-<p>Hello, world!</p>
+<div class="accordion" id="accordion">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <a href="/create">Create Workout</a>
+            </h2>
+        </div>
+    </div>
+    {% for workout in workouts %}
+        <div class="card">
+            <div class="card-header" id="heading{{ workout.id }}">
+                <div class="row">
+                    <h2 class="mb-0 col-md">
+                        {{ workout.name }} -- {{ workout.weight }}
+                    </h2>
+                    <h2 class="mb-0 col-">
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
+                            Edit
+                        </button>
+                    </h2>
+                </div>
+            </div>
+
+            <div id="collapse{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
+                <div class="card-body">
+                    <form action="/" method="post">
+                        <div class="form-group">
+                            <input class="invisible" name="workout" value="{{ workout.name }}">
+                            <input class="form-control" type="number" name="weight" placeholer="New weight">
+                            <button type="submit" btn>Change</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

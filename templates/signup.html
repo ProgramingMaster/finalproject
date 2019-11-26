@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    signup
+{% endblock %}
+
+{% block main %}
+
+    <form action="/signup" method="post">
+        <div class="form-group">
+            <input class="form-control" type="text" name="username">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="confirmation">
+        </div>
+        <button type="submit" class="btn btn-primary">Sign up</button>
+        <p>Already have an account? <a href="/signup">Log in!</a></p>
+    </form>
+{% endblock %}
