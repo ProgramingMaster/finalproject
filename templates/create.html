@@ -5,13 +5,15 @@
 {% endblock %}
 
 {% block main %}
-    <div class="card-header row m-0">
-        <h2 class="col-md">
-            <a href="/">Back to Workouts</a>
-        </h2>
-        <h2 class="col-">
-            <a href="/logout" class="btn btn-outline-warning">Log out</a>
-        </h2>
+    <div class="card-header">
+        <div class="row m-0">
+            <h2 class="col-md">
+                <a href="/">Back to Workouts</a>
+            </h2>
+            <h2 class="col-">
+                <a href="/logout" class="btn btn-outline-warning">Log out</a>
+            </h2>
+        </div>
     </div>
     <div class="card-body">
         <form action="/create" method="post" class="form">
