@@ -4,3 +4,4 @@ Flask-Session
 Gunicorn
 psycopg2
 requests
+redis
