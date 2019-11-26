@@ -38,7 +38,18 @@ def index():
         weight = request.form.get("weight")
         if not weight:
             return render_template("index.html", err="must provide new weight")
+
+        try:
+            weight = int(weight)
+        except:
+            return render_template("index.html", err="current weight must be an integer")
+
+        if weight < 1:
+            return render_template("index.html", err="current weight must be positive")
+
         workout = request.form.get("workout")
+        if not weight:
+            return render_template("index.html", err="must provide new weight")
         db.execute("UPDATE workouts SET weight = :weight WHERE userId = :userId AND name = :workout", weight=weight, userId=session["userId"], workout=workout)
         return redirect("/")
 

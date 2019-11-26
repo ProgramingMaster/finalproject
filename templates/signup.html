@@ -6,17 +6,18 @@
 
 {% block main %}
 
-    <form action="/signup" method="post">
+    <form action="/signup" method="post" class="form">
         <div class="form-group">
-            <input class="form-control" type="text" name="username">
+            <input class="form-control" type="text" name="username" placeholder="username">
         </div>
         <div class="form-group">
-            <input class="form-control" type="password" name="password">
+            <input class="form-control" type="password" name="password" placeholder="password">
         </div>
         <div class="form-group">
-            <input class="form-control" type="password" name="confirmation">
+            <input class="form-control" type="password" name="confirmation" placeholder="confirmation password">
         </div>
         <button type="submit" class="btn btn-primary">Sign up</button>
+
         <p>Already have an account? <a href="/signup">Log in!</a></p>
     </form>
 {% endblock %}

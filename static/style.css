@@ -1,0 +1,16 @@
+body {
+    background-color: #013029;
+    /*background-color: #445452;*/
+}
+
+.form {
+    text-align: center;
+}
+
+.form-control {
+    /* center form controls */
+    margin: auto;
+
+    /* override Bootstrap's 100% width for form controls */
+    width: auto;
+}
