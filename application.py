@@ -26,15 +26,18 @@ def after_request(response):
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'dev_key'
+#app.config.from_mapping(
+#app.secret_key = 'm3vhIaDWWrAp3QlMwjwk'
+SECRET_KEY = 'm3vhIaDWWrAp3QlMwjwk'
+#)
 #SESSION_REDIS = redis.from_url(environ.get('SESSION_REDIS'))
 
 Session(app)
 
 
 
-db = SQL("postgres://zcjxmflvvdjgej:842176674c37fbc83dcc95627716e96dfaf311b1f8b67a50ec52395ee7a5fcbf@ec2-23-21-249-0.compute-1.amazonaws.com:5432/d6dvfncect3bc")
-#db = SQL("sqlite:///finalproject.db")
+#db = SQL("postgres://zcjxmflvvdjgej:842176674c37fbc83dcc95627716e96dfaf311b1f8b67a50ec52395ee7a5fcbf@ec2-23-21-249-0.compute-1.amazonaws.com:5432/d6dvfncect3bc")
+db = SQL("sqlite:///finalproject.db")
 
 @app.route("/", methods=["GET", "POST"])
 @login_required
