@@ -18,13 +18,31 @@
 
 <body>
     <div class="container mt-5">
-        {% if err %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ err }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+        <!--{% if err %}-->
+        <!--    <div class="alert alert-danger alert-dismissible fade show" role="alert">-->
+        <!--        {{ err }}-->
+        <!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+        <!--            <span aria-hidden="true">&times;</span>-->
+        <!--        </button>-->
+        <!--    </div>-->
+        <!--{% endif %}-->
+        {% if get_flashed_messages() %}
+            {% set message = get_flashed_messages() | flashFormat %}
+            {% if message[0] == "err" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message[1] }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% else %}
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    {{ message[1] }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
         {% endif %}
         <div class="card p-2">
             {% block main %}{% endblock %}

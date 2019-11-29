@@ -1,6 +1,9 @@
 from flask import redirect, session
 from functools import wraps
 
+def flashFormat(message):
+    return message[0].split("|")
+
 def login_required(f):
     """
     Decorate routes to require login.
