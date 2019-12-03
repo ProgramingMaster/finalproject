@@ -5,6 +5,7 @@ body {
 
 .form {
     text-align: center;
+    margin: auto;
 }
 
 .form-control {
@@ -15,8 +16,15 @@ body {
     width: auto;
 }
 
-.accordion
-{
+.accordion {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: calc(0.25rem - 1px);
+}
+
+.weightLeft {
+    margin-left: auto;
+}
+
+.weightRight {
+    margin-right: auto;
 }

@@ -7,7 +7,7 @@ let findWeights = function(id, weight) {
     }
     if (weight - 45 < 5) {
         //return "Just use the bar. Remainder: " + weight / 2 + " on each side"
-        return "Just use the bar. R: " + weight / 2
+        return "Just use the bar. R: " + weight
     }
     else if (weight - 45 == 0) {
         return "Just use the bar"
@@ -18,7 +18,7 @@ let findWeights = function(id, weight) {
     while (weight !== 0){
         if (i >= arr.length)
             //return "What weights to put on each side of the bar: " + result.join(' ') + " Remainder: " + weight / 2 + " on each side"
-            return result.join(' ') + "R: " + weight / 2
+            return [result.join(' '), result.reverse().join(' ') + " R: " + weight]
         if (weight - arr[i]*2 >= 0){
             weight -= arr[i]*2
             result.push(String(arr[i]))
@@ -28,16 +28,27 @@ let findWeights = function(id, weight) {
         }
     }
     //return "What weights to put on each side of the bar: " + result.join(' ')
-    return result.join(' ')
+    return result.join('<br>')
 }
 
 let calculate = function(id, weight) {
-    if ($('#result' + id).is(':empty'))
-        $('#result' + id).text(findWeights(id, weight))
+    if ($('#resultLeft' + id).is(':empty') || $('#resultRight' + id).is(':empty')){
+        weights = findWeights(id, weight)
+        $('#resultLeft' + id).html(weights)
+        $('#resultRight' + id).html(weights)
+    }
 }
 
 let calculatePercent = function(id, weight, percent){
-    pweight = weight * (Number(percent) * 0.01)
+
+    if (percent === undefined) {
+        return
+    }
+
+    pweight = Number((weight * (Number(percent) * 0.01)).toFixed(2))
     $('#warmupTotal' + id).text("Total: " + pweight)
-    $('#warmup' + id).text(findWeights(id, pweight))
+
+    weights = findWeights(id, pweight)
+    $('#warmupLeft' + id).html(weights)
+    $('#warmupRight' + id).html(weights)
 }
