@@ -7,7 +7,7 @@ let findWeights = function(id, weight) {
     }
     if (weight - 45 < 5) {
         //return "Just use the bar. Remainder: " + weight / 2 + " on each side"
-        return "Just use the bar. R: " + weight
+        return "Just use the bar. R: " + weight / 2
     }
     else if (weight - 45 == 0) {
         return "Just use the bar"
@@ -18,7 +18,7 @@ let findWeights = function(id, weight) {
     while (weight !== 0){
         if (i >= arr.length)
             //return "What weights to put on each side of the bar: " + result.join(' ') + " Remainder: " + weight / 2 + " on each side"
-            return [result.join(' '), result.reverse().join(' ') + " R: " + weight]
+            return result.join('<br>') + "<br>R: " + weight / 2
         if (weight - arr[i]*2 >= 0){
             weight -= arr[i]*2
             result.push(String(arr[i]))

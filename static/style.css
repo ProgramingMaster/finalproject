@@ -25,6 +25,11 @@ body {
     margin-left: auto;
 }
 
+.weightImg {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 .weightRight {
     margin-right: auto;
 }
