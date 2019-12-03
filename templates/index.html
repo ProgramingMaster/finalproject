@@ -5,46 +5,71 @@
 {% endblock %}
 
 {% block main %}
-<div class="card-header">
-    <div class="row m-0">
-        <h2 class="col-md">
-            <a href="/create" class="btn btn-primary">Create Workout</a>
-        </h2>
-        <h2 class="col-">
-            <a href="/logout" class="btn btn-warning">Log out</a>
-        </h2>
+    <div class="card-header">
+        <div class="row m-0">
+            <h2 class="col-md">
+                <a href="/create" class="btn btn-primary">Create Workout</a>
+            </h2>
+            <h2 class="col- pl-3">
+                <a href="/logout" class="btn btn-warning">Log out</a>
+            </h2>
+        </div>
     </div>
-</div>
-<div class="card-body">
-    <div class="accordion" id="accordion">
-        {% for workout in workouts %}
-            <div class="card">
-                <div class="card-header" id="heading{{ workout.id }}">
-                    <div class="row">
-                        <h2 class="mb-0 col-md">
-                            {{ workout.name }} -- {{ workout.weight }}
-                        </h2>
-                        <h2 class="mb-0 col-">
-                            <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
-                                Edit
-                            </button>
-                        </h2>
+    <div class="card-body">
+        <div class="accordion" id="accordion">
+            {% for workout in workouts %}
+                <div class="card">
+                    <div class="card-header" id="heading{{ workout.id }}">
+                        <div class="row">
+                            <h2 class="mb-0 col-md">
+                                {{ workout.name }} -- {{ workout.weight }}
+                            </h2>
+                            <h2 class="mb-0 mr-1 col-">
+                                <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
+                                    Edit
+                                </button>
+                            </h2>
+                            <h2 class="mb-0 col-">
+                                <form onsubmit="calculate({{ workout.id }}, {{ workout.weight }}); return false">
+                                    <button id="calculatebtn{{ workout.id }}" class="btn btn-outline-primary" type="submit" data-toggle="collapse" data-target="#cal{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
+                                        Calculate
+                                    </button>
+                                </form>
+                            </h2>
+                        </div>
                     </div>
-                </div>
 
-                <div id="collapse{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
-                    <div class="card-body">
-                        <form action="/" method="post" class="form">
-                            <div class="form-group">
-                                <input class="invisible" name="workout" value="{{ workout.name }}">
-                                <input class="form-control" type="number" name="weight" placeholder="New weight">
-                                <button type="submit" class="btn btn-primary mt-2">Change</button>
-                            </div>
-                        </form>
+                    <div id="collapse{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
+                        <div class="card-body">
+                            <form action="/" method="post" class="form">
+                                <div class="form-group">
+                                    <input class="invisible" name="workout" value="{{ workout.name }}">
+                                    <input class="form-control" type="number" name="weight" placeholder="New weight">
+                                    <button type="submit" class="btn btn-primary mt-2">Change</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="cal{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
+                        <div class="card-body form">
+                            <h5 id="result{{ workout.id }}"></h5>
+                            <form onsubmit="calculatePercent({{ workout.id }}, {{ workout.weight }}, percent.value); return false" class="form">
+                                <div class="form-group">
+                                    <input class="form-control" id="percent" type="number" placeholder="Percent">
+                                    <button type="submit" class="btn btn-primary mt-2">Calculate</button>
+                                </div>
+                            </form>
+                            <h5 id="warmupTotal{{ workout.id }}"></h5>
+                            <h6 id="warmup{{ workout.id }}"></h6>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-</div>
+{% endblock %}
+
+{% block script %}
+    <script src="../static/js/calculate.js"></script>
 {% endblock %}

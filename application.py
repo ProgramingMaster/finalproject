@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required, flashFormat
+from helpers import login_required
 
 app = Flask(__name__)
 
@@ -37,7 +37,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
 
-app.jinja_env.filters["flashFormat"] = flashFormat
 
 @app.route("/", methods=["GET", "POST"])
 @login_required
@@ -54,31 +53,32 @@ def index():
         try:
             weight = int(weight)
         except:
-            flash("err|current weight must be an integer")
+            flash("current weight must be an integer", "danger")
             return redirect("/")
 
-        # Ensure weight was not negative positive
+        # Ensure weight was not negative
         if weight < 0:
-            flash("err|current weight must not be negative")
+            flash("current weight must not be negative", "danger")
             return redirect("/")
 
         workout = request.form.get("workout")
 
         # Ensure weight was submitted
         if not weight:
-            flash("err|must provide new weight")
+            flash("must provide new weight", "danger")
             return redirect("/")
 
         # Update weight
         db.execute("UPDATE workouts SET weight = :weight WHERE userId = :userId AND name = :workout", weight=weight, userId=session["userId"], workout=workout)
 
-        flash("suc|Edited!")
+        flash("Edited!", "primary")
 
         return redirect("/")
 
     else:
         # Get all of the user's workouts
         workouts = db.execute("SELECT * FROM workouts WHERE userId = :userId", userId=session["userId"])
+
         return render_template("index.html", workouts=workouts)
 
 @app.route("/create", methods=["GET", "POST"])
@@ -92,19 +92,19 @@ def create():
 
         # Ensure name was submitted
         if not name:
-            flash("err|must provide name of workout")
+            flash("must provide name of workout", "danger")
             return redirect("/create")
 
         # Ensure current is an integer
         try:
             current = int(current)
         except:
-            flash("err|current weight must be an integer")
+            flash("current weight must be an integer", "danger")
             return redirect("/create")
 
         # Ensure current is not negative
         if current < 0:
-            flash("err|current weight must not be negative")
+            flash("current weight must not be negative", "danger")
             return redirect("/create")
 
         # format name correctly
@@ -114,13 +114,13 @@ def create():
         workout = db.execute("SELECT * FROM workouts WHERE userId = :userId AND name = :name", userId=session["userId"], name=name)
 
         if len(workout) > 0:
-            flash("err|that workout already exists")
+            flash("that workout already exists", "danger")
             return redirect("/create")
 
         # Add workout
         db.execute("INSERT INTO workouts (userId, name, weight) VALUES (:userId, :name, :weight)", userId=session["userId"], name=name, weight=int(current))
 
-        flash("suc|Created!")
+        flash("Created!", "primary")
 
         return redirect("/")
 
@@ -134,19 +134,26 @@ def signup():
 
         password = request.form.get("password")
 
+        confirmation = request.form.get("confirmation")
+
         # Ensure username was submitted
         if not username:
-            flash("err|must provide username")
+            flash("must provide username", "danger")
             return redirect("/signup")
 
         # Ensure password was submitted
         if not password:
-            flash("err|must provide password")
+            flash("must provide password", "danger")
+            return redirect("/signup")
+
+        # Ensure confirmation password was submitted
+        if not confirmation:
+            flash("must provide confirmation password", "danger")
             return redirect("/signup")
 
         # Ensure password and confirmation password match
-        if not request.form.get("confirmation") == password:
-            flash("err|password and confimation password don't match")
+        if not confirmation  == password:
+            flash("password and confimation password don't match", "danger")
             return redirect("/signup")
 
         # Check if username already exist
@@ -154,7 +161,7 @@ def signup():
                           username=request.form.get("username"))
 
         if len(user) != 0:
-            flash("err|username is not available")
+            flash("username is not available", "danger")
             return redirect("/signup")
 
         # Add user
@@ -164,7 +171,7 @@ def signup():
         # Remember user
         session["userId"] = userId
 
-        flash("suc|Signed up!")
+        flash("Signed up!", "primary")
 
         return redirect("/")
     else:
@@ -183,12 +190,12 @@ def login():
 
         # Ensure username was submitted
         if not request.form.get("username"):
-            flash("err|must provide username")
+            flash("must provide username", "danger")
             return redirect("/login")
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            flash("err|must provide password")
+            flash("must provide password", "danger")
             return redirect("/login")
 
         # Query database for username
@@ -197,7 +204,7 @@ def login():
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            flash("invalid username and/or password")
+            flash("invalid username and/or password", "danger")
             return redirect("/login")
 
         # Remember which user has logged in

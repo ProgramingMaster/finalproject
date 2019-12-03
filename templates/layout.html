@@ -18,36 +18,26 @@
 
 <body>
     <div class="container mt-5">
-        <!--{% if err %}-->
-        <!--    <div class="alert alert-danger alert-dismissible fade show" role="alert">-->
-        <!--        {{ err }}-->
-        <!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
-        <!--            <span aria-hidden="true">&times;</span>-->
-        <!--        </button>-->
-        <!--    </div>-->
-        <!--{% endif %}-->
-        {% if get_flashed_messages() %}
-            {% set message = get_flashed_messages() | flashFormat %}
-            {% if message[0] == "err" %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ message[1] }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% else %}
-                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                    {{ message[1] }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+        <!-- https://stackoverflow.com/questions/51273822/how-to-flash-success-and-danger-with-different-messages-in-flask -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
             {% endif %}
-        {% endif %}
+        {% endwith %}
+
         <div class="card p-2">
             {% block main %}{% endblock %}
         </div>
     </div>
+
+    {% block script %}{% endblock %}
 </body>
 
 </html>
