@@ -2,14 +2,14 @@ let findWeights = function(id, weight) {
     arr = [45, 35, 25, 10, 5, 2.5]
     result = []
     i = 0
-    if (weight - 45 < 0) {
+    if (weight < 45) {
         return "Your weight is " + (45 - weight) + "lb(s) lighter than the bar"
     }
-    if (weight - 45 < 5) {
+    if (weight < 50) {
         //return "Just use the bar. Remainder: " + weight / 2 + " on each side"
         return "Just use the bar. R: " + Number((weight / 2).toFixed(1))
     }
-    else if (weight - 45 == 0) {
+    else if (weight == 45) {
         return "Just use the bar"
     }
 
@@ -32,6 +32,11 @@ let findWeights = function(id, weight) {
 }
 
 let calculate = function(id, weight) {
+    if (weight > 2000) {
+        alert("There's no way your lifting that much weight!")
+        return
+    }
+
     if ($('#resultLeft' + id).is(':empty') || $('#resultRight' + id).is(':empty')) {
         weights = findWeights(id, weight)
         $('#resultLeft' + id).html(weights)
@@ -44,7 +49,7 @@ let calculatePercent = function(id, weight, percent){
         alert('Please input percent')
         return
     }
-    if (percent.search(/\D|(^0+)/) != -1) {
+    if (percent.search(/\D|(^0+$)/) != -1) {
         alert('Percent must be a positive integer')
         return
     }

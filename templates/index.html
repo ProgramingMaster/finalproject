@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    workouts
+    CSLifty
 {% endblock %}
 
 {% block main %}
@@ -29,13 +29,13 @@
                                 {{ workout.name }}: {{ workout.weight }}
                             </h2>
                             <!-- Expands the edit section -->
-                            <h2 class="mb-0 mr-1 col- mr-auto">
+                            <h2 class="mb-0 mr-1 col- ml-auto">
                                 <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
                                     Edit
                                 </button>
                             </h2>
                             <!-- Expands the calculate section and calls a js function that calculates and displays the weights to put on the bar for that workout -->
-                            <h2 class="mb-0 col- ml-auto">
+                            <h2 class="mb-0 col- mr-auto">
                                 <form onsubmit="calculate({{ workout.id }}, {{ workout.weight }}); return false">
                                     <button id="calculatebtn{{ workout.id }}" class="btn btn-outline-primary" type="submit" data-toggle="collapse" data-target="#cal{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
                                         Calculate

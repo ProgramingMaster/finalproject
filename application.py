@@ -8,6 +8,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import login_required
+import re
 
 app = Flask(__name__)
 
@@ -49,34 +50,35 @@ def index():
         if not weight:
             flash("must provide new weight")
             return redirect("/")
+        if not re.search("\D|(^0+$)", weight) == None:
+            flash("Weight must be a positive integer", "danger")
+            return redirect('/')
 
-        # Check if weight is an integer
-        try:
-            weight = int(weight)
-        except:
-            flash("current weight must be an integer", "danger")
-            return redirect("/")
-
-        # Ensure weight was not negative
-        if weight < 0:
-            flash("current weight must not be negative", "danger")
-            return redirect("/")
+        weight = int(weight)
 
         # Ensure current is not a enormous number (the largest deadlift is 1102 lbs)
         if weight > 2000:
-            flash("There's no way your lifting that weight")
+            flash("There's no way your lifting that weight", "danger")
             return redirect("/")
 
         workout = request.form.get("workout")
 
-        # Ensure weight was submitted
-        if not weight:
+        # Ensure workout was submitted
+        if not workout:
             flash("must provide new weight", "danger")
             return redirect("/")
 
+        # Ensure the workout exist
+        id = db.execute("SELECT id FROM workouts WHERE userId = :userId AND name = :workout",
+                             userId=session["userId"], workout=workout)
+
+        if len(id) == 0:
+            flash("That workout doesn't exist", "danger")
+            return redirect("/")
+
         # Update weight
-        db.execute("UPDATE workouts SET weight = :weight WHERE userId = :userId AND name = :workout",
-                   weight=weight, userId=session["userId"], workout=workout)
+        db.execute("UPDATE workouts SET weight = :weight WHERE id = :id",
+                   weight=weight, id=id[0]["id"])
 
         flash("Edited!", "primary")
 
