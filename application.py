@@ -22,6 +22,7 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
 # Configurations on development mode
 if os.environ.get('APPLICATION_ENV') == 'dev':
     app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -61,6 +62,11 @@ def index():
             flash("current weight must not be negative", "danger")
             return redirect("/")
 
+        # Ensure current is not a enormous number (the largest deadlift is 1102 lbs)
+        if weight > 2000:
+            flash("There's no way your lifting that weight")
+            return redirect("/")
+
         workout = request.form.get("workout")
 
         # Ensure weight was submitted
@@ -69,7 +75,8 @@ def index():
             return redirect("/")
 
         # Update weight
-        db.execute("UPDATE workouts SET weight = :weight WHERE userId = :userId AND name = :workout", weight=weight, userId=session["userId"], workout=workout)
+        db.execute("UPDATE workouts SET weight = :weight WHERE userId = :userId AND name = :workout",
+                   weight=weight, userId=session["userId"], workout=workout)
 
         flash("Edited!", "primary")
 
@@ -80,6 +87,7 @@ def index():
         workouts = db.execute("SELECT * FROM workouts WHERE userId = :userId", userId=session["userId"])
 
         return render_template("index.html", workouts=workouts)
+
 
 @app.route("/create", methods=["GET", "POST"])
 @login_required
@@ -107,18 +115,25 @@ def create():
             flash("current weight must not be negative", "danger")
             return redirect("/create")
 
+        # Ensure current is not a enormous number (the largest deadlift is 1102 lbs)
+        if current > 2000:
+            flash("There's no way your lifting that weight")
+            return redirect("/create")
+
         # format name correctly
         name = name.lower().capitalize()
 
         # Ensure the workout doesn't already exist
-        workout = db.execute("SELECT * FROM workouts WHERE userId = :userId AND name = :name", userId=session["userId"], name=name)
+        workout = db.execute("SELECT * FROM workouts WHERE userId = :userId AND name = :name",
+                             userId=session["userId"], name=name)
 
         if len(workout) > 0:
             flash("that workout already exists", "danger")
             return redirect("/create")
 
         # Add workout
-        db.execute("INSERT INTO workouts (userId, name, weight) VALUES (:userId, :name, :weight)", userId=session["userId"], name=name, weight=int(current))
+        db.execute("INSERT INTO workouts (userId, name, weight) VALUES (:userId, :name, :weight)",
+                   userId=session["userId"], name=name, weight=int(current))
 
         flash("Created!", "primary")
 
@@ -126,6 +141,7 @@ def create():
 
     else:
         return render_template("create.html")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -152,7 +168,7 @@ def signup():
             return redirect("/signup")
 
         # Ensure password and confirmation password match
-        if not confirmation  == password:
+        if not confirmation == password:
             flash("password and confimation password don't match", "danger")
             return redirect("/signup")
 
@@ -166,7 +182,7 @@ def signup():
 
         # Add user
         userId = db.execute("INSERT INTO users (username, hash) VALUES (:username, :passwordHash)",
-                    username=username, passwordHash=generate_password_hash(password))
+                            username=username, passwordHash=generate_password_hash(password))
 
         # Remember user
         session["userId"] = userId
@@ -216,6 +232,7 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
+
 
 @app.route("/logout")
 def logout():

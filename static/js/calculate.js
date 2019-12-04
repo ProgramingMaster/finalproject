@@ -7,7 +7,7 @@ let findWeights = function(id, weight) {
     }
     if (weight - 45 < 5) {
         //return "Just use the bar. Remainder: " + weight / 2 + " on each side"
-        return "Just use the bar. R: " + weight / 2
+        return "Just use the bar. R: " + Number((weight / 2).toFixed(1))
     }
     else if (weight - 45 == 0) {
         return "Just use the bar"
@@ -15,11 +15,11 @@ let findWeights = function(id, weight) {
 
     weight -= 45
 
-    while (weight !== 0){
+    while (weight !== 0) {
         if (i >= arr.length)
-            //return "What weights to put on each side of the bar: " + result.join(' ') + " Remainder: " + weight / 2 + " on each side"
-            return result.join('<br>') + "<br>R: " + weight / 2
-        if (weight - arr[i]*2 >= 0){
+            return result.join('<br>') + "<br>R: " + Number((weight / 2).toFixed(1))
+
+        if (weight - arr[i]*2 >= 0) {
             weight -= arr[i]*2
             result.push(String(arr[i]))
         }
@@ -32,7 +32,7 @@ let findWeights = function(id, weight) {
 }
 
 let calculate = function(id, weight) {
-    if ($('#resultLeft' + id).is(':empty') || $('#resultRight' + id).is(':empty')){
+    if ($('#resultLeft' + id).is(':empty') || $('#resultRight' + id).is(':empty')) {
         weights = findWeights(id, weight)
         $('#resultLeft' + id).html(weights)
         $('#resultRight' + id).html(weights)
@@ -40,15 +40,26 @@ let calculate = function(id, weight) {
 }
 
 let calculatePercent = function(id, weight, percent){
-
-    if (percent === undefined) {
+    if (percent === '') {
+        alert('Please input percent')
+        return
+    }
+    if (percent.search(/\D|(^0+)/) != -1) {
+        alert('Percent must be a positive integer')
         return
     }
 
-    pweight = Number((weight * (Number(percent) * 0.01)).toFixed(2))
-    $('#warmupTotal' + id).text("Total: " + pweight)
+    percent = Number(percent)
 
-    weights = findWeights(id, pweight)
+    if (percent >= 100) {
+        alert('Percent must be less than 100')
+        return
+    }
+
+    warmpWeight = Number((weight * (percent * 0.01)).toFixed(2))
+    $('#warmupTotal' + id).text("Total: " + warmpWeight)
+
+    weights = findWeights(id, warmpWeight)
     $('#warmupLeft' + id).html(weights)
     $('#warmupRight' + id).html(weights)
 }
