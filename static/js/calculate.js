@@ -2,18 +2,12 @@ let findWeights = function(id, weight) {
     arr = [45, 35, 25, 10, 5, 2.5]
     result = []
     i = 0
-    if (weight < 45) {
-        return "Your weight is " + (45 - weight) + "lb(s) lighter than the bar"
-    }
-    if (weight < 50) {
-        //return "Just use the bar. Remainder: " + weight / 2 + " on each side"
-        return "Just use the bar. R: " + Number((weight / 2).toFixed(1))
-    }
-    else if (weight == 45) {
-        return "Just use the bar"
-    }
 
     weight -= 45
+
+    if (weight <= 0) {
+        return 0
+    }
 
     while (weight !== 0) {
         if (i >= arr.length)
@@ -27,24 +21,18 @@ let findWeights = function(id, weight) {
             i++
         }
     }
-    //return "What weights to put on each side of the bar: " + result.join(' ')
     return result.join('<br>')
 }
 
-let calculate = function(id, weight) {
-    if (weight > 2000) {
-        alert("There's no way your lifting that much weight!")
-        return
-    }
-
-    if ($('#resultLeft' + id).is(':empty') || $('#resultRight' + id).is(':empty')) {
+let calWeights = function(id, weight) {
+    if (($('#weightsLeft' + id).is(':empty') || $('#weightsRight' + id).is(':empty'))) {
         weights = findWeights(id, weight)
-        $('#resultLeft' + id).html(weights)
-        $('#resultRight' + id).html(weights)
+        $('#weightsLeft' + id).html(weights)
+        $('#weightsRight' + id).html(weights)
     }
 }
 
-let calculatePercent = function(id, weight, percent){
+let calPercent = function(id, weight, percent){
     if (percent === '') {
         alert('Please input percent')
         return

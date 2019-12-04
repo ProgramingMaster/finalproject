@@ -24,43 +24,48 @@ def after_request(response):
     return response
 
 
-# Configurations on development mode
+# Set up local database on development mode. Also configures the SESSION_FILE_DIR (which is needed on development mode but messes up production mode)
 if os.environ.get('APPLICATION_ENV') == 'dev':
     app.config["SESSION_FILE_DIR"] = mkdtemp()
     db = SQL("sqlite:///finalproject.db")
-# Configurations on production mode
+# Set up heroku database on production mode
 else:
     app.secret_key = 'asdjfklajsfd'
     db = SQL("postgres://zcjxmflvvdjgej:842176674c37fbc83dcc95627716e96dfaf311b1f8b67a50ec52395ee7a5fcbf@ec2-23-21-249-0.compute-1.amazonaws.com:5432/d6dvfncect3bc")
 
-# Configurations either way
+# Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-
 Session(app)
 
 
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
+    # Edits weight on a workout if request method is post
     if request.method == "POST":
+        # Gets the new weight from the form
         weight = request.form.get("weight")
 
         # Ensure weight was submitted
         if not weight:
             flash("must provide new weight")
             return redirect("/")
-        if not re.search("\D|(^0+$)", weight) == None:
-            flash("Weight must be a positive integer", "danger")
+
+        # Ensure weight is (formatted as) a non negative integer
+        if not re.search("\D", weight) == None:
+            flash("Weight must be a non negative integer", "danger")
             return redirect('/')
 
+        # turn weight into an integer
         weight = int(weight)
 
-        # Ensure current is not a enormous number (the largest deadlift is 1102 lbs)
+        # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs)
         if weight > 2000:
             flash("There's no way your lifting that weight", "danger")
             return redirect("/")
 
+        # Grab the workout you want to edit the weight of (this is grabed from an invisible form whose value is already set to whatever workout your on)
         workout = request.form.get("workout")
 
         # Ensure workout was submitted
@@ -68,18 +73,20 @@ def index():
             flash("must provide new weight", "danger")
             return redirect("/")
 
-        # Ensure the workout exist
-        id = db.execute("SELECT id FROM workouts WHERE userId = :userId AND name = :workout",
+        # Query database for workout
+        workout = db.execute("SELECT id FROM workouts WHERE userId = :userId AND name = :workout",
                              userId=session["userId"], workout=workout)
 
-        if len(id) == 0:
+        # Ensure the workout exists
+        if len(workout) == 0:
             flash("That workout doesn't exist", "danger")
             return redirect("/")
 
         # Update weight
         db.execute("UPDATE workouts SET weight = :weight WHERE id = :id",
-                   weight=weight, id=id[0]["id"])
+                   weight=weight, id=workout[0]["id"])
 
+        # Show success!
         flash("Edited!", "primary")
 
         return redirect("/")
@@ -95,9 +102,10 @@ def index():
 @login_required
 def create():
     if request.method == "POST":
+        # Grab the name of the workout your creating
         name = request.form.get("name")
 
-        # Since current weight isn't required, set it to zero if not given
+        # Grab your current weight on the workout, but since this isn't required, set it to zero if not given
         current = request.form.get("current") if request.form.get("current") else 0
 
         # Ensure name was submitted
@@ -105,17 +113,13 @@ def create():
             flash("must provide name of workout", "danger")
             return redirect("/create")
 
-        # Ensure current is an integer
-        try:
-            current = int(current)
-        except:
-            flash("current weight must be an integer", "danger")
-            return redirect("/create")
+        # Ensure current is (formatted as) a non negative integer
+        if not re.search("\D", current) == None:
+            flash("Current weight must be a non negative integer", "danger")
+            return redirect('/')
 
-        # Ensure current is not negative
-        if current < 0:
-            flash("current weight must not be negative", "danger")
-            return redirect("/create")
+        # turn weight into an integer
+        current = int(current)
 
         # Ensure current is not a enormous number (the largest deadlift is 1102 lbs)
         if current > 2000:
@@ -125,10 +129,11 @@ def create():
         # format name correctly
         name = name.lower().capitalize()
 
-        # Ensure the workout doesn't already exist
+        # Query datbase for workout
         workout = db.execute("SELECT * FROM workouts WHERE userId = :userId AND name = :name",
                              userId=session["userId"], name=name)
 
+        # Ensure the workout doesn't already exist
         if len(workout) > 0:
             flash("that workout already exists", "danger")
             return redirect("/create")
@@ -137,6 +142,7 @@ def create():
         db.execute("INSERT INTO workouts (userId, name, weight) VALUES (:userId, :name, :weight)",
                    userId=session["userId"], name=name, weight=int(current))
 
+        # Show success!
         flash("Created!", "primary")
 
         return redirect("/")
@@ -148,10 +154,13 @@ def create():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
+        # Grab username
         username = request.form.get("username")
 
+        # Grab password
         password = request.form.get("password")
 
+        # Grab confirmation password
         confirmation = request.form.get("confirmation")
 
         # Ensure username was submitted
@@ -174,10 +183,11 @@ def signup():
             flash("password and confimation password don't match", "danger")
             return redirect("/signup")
 
-        # Check if username already exist
+        # Query database for username
         user = db.execute("SELECT * FROM users WHERE username = :username",
                           username=request.form.get("username"))
 
+        # Check if username already exist
         if len(user) != 0:
             flash("username is not available", "danger")
             return redirect("/signup")
@@ -189,6 +199,7 @@ def signup():
         # Remember user
         session["userId"] = userId
 
+        # Show success!
         flash("Signed up!", "primary")
 
         return redirect("/")

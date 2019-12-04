@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
+    <title>CSLifty</title>
     <meta name="author" content="">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <div class="container mt-5">
+    <div class="container mt-3 mb-3">
         <!-- https://stackoverflow.com/questions/51273822/how-to-flash-success-and-danger-with-different-messages-in-flask -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

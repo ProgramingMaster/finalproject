@@ -18,10 +18,10 @@
     </div>
     <!-- Body -->
     <div class="card-body">
-        <div class="accordion" id="accordion">
+        <div id="accordion">
             <!-- Makes a list of expandable cards for each workout -->
             {% for workout in workouts %}
-                <div class="card">
+                <div class="card center">
                     <div class="card-header" id="heading{{ workout.id }}">
                         <div class="row">
                             <!-- workout name and weight -->
@@ -35,9 +35,9 @@
                                 </button>
                             </h2>
                             <!-- Expands the calculate section and calls a js function that calculates and displays the weights to put on the bar for that workout -->
-                            <h2 class="mb-0 col- mr-auto">
-                                <form onsubmit="calculate({{ workout.id }}, {{ workout.weight }}); return false">
-                                    <button id="calculatebtn{{ workout.id }}" class="btn btn-outline-primary" type="submit" data-toggle="collapse" data-target="#cal{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
+                            <h2 class="col- mb-0 mr-auto">
+                                <form onsubmit="calWeights({{ workout.id }}, {{ workout.weight }}); return false">
+                                    <button class="btn btn-outline-primary" type="submit" data-toggle="collapse" data-target="#calCard{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
                                         Calculate
                                     </button>
                                 </form>
@@ -48,7 +48,7 @@
                     <!-- Edit Section -->
                     <div id="collapse{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
                         <div class="card-body">
-                            <form action="/" method="post" class="form">
+                            <form action="/" method="post">
                                 <div class="form-group">
                                     <input class="invisible" name="workout" value="{{ workout.name }}">
                                     <input class="form-control" type="number" name="weight" placeholder="New weight">
@@ -59,17 +59,18 @@
                     </div>
 
                     <!-- Calculate Section -->
-                    <div id="cal{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
-                        <div class="card-body form">
+                    <div id="calCard{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
+                        <div class="card-body">
                             <!-- Shows what weights to put on each side of the bar -->
                             <div class="row">
-                                <h5 class="col- weightLeft" id="resultLeft{{ workout.id }}"></h5>
-                                <img class="col- align-self-center" src="../static/assets/barbell.png" width="100px" height="50px">
-                                <h5 class="col- weightRight" id="resultRight{{ workout.id }}"></h5>
+                                <h5 class="col- mr-2 ml-auto align-self-center" id="weightsLeft{{ workout.id }}"></h5>
+                                <img class="col- mb-2 align-self-center" src="../static/assets/barbell.png" width="100px" height="50px">
+                                <h5 class="col- ml-2 mr-auto align-self-center" id="weightsRight{{ workout.id }}"></h5>
                             </div>
 
+
                             <!-- Calculate warmup weights -->
-                            <form onsubmit="calculatePercent({{ workout.id }}, {{ workout.weight }}, percent.value); return false" class="form">
+                            <form onsubmit="calPercent({{ workout.id }}, {{ workout.weight }}, percent.value); return false">
                                 <div class="form-group">
                                     <input class="form-control" id="percent" type="number" placeholder="Percent">
                                     <button type="submit" class="btn btn-primary mt-2">Calculate Warmup</button>
@@ -81,9 +82,9 @@
 
                             <!-- Show what weights to put on the bar for the warmup -->
                             <div class="row">
-                                <h5 class="col- weightLeft" id="warmupLeft{{ workout.id }}"></h5>
-                                <img class="col- align-self-center" src="../static/assets/barbell.png" class="pb-2" width="100px" height="50px">
-                                <h5 class="col- weightRight" id="warmupRight{{ workout.id }}"></h5>
+                                <h5 class="col- mr-2 ml-auto align-self-center" id="warmupLeft{{ workout.id }}"></h5>
+                                <img class="col- mb-2 align-self-center" src="../static/assets/barbell.png" class="pb-2" width="100px" height="50px">
+                                <h5 class="col- ml-2 mr-auto align-self-center" id="warmupRight{{ workout.id }}"></h5>
                             </div>
                         </div>
                     </div>

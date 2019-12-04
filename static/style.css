@@ -2,8 +2,8 @@ body {
     background-color: #013029;
 }
 
-/* centers everything that's part of the form */
-.form {
+/* centers stuff */
+.center {
     text-align: center;
     margin: auto;
 }
@@ -17,21 +17,7 @@ body {
 }
 
 /* Puts in the bottom line that disappears if there's only one item in the accordian */
-.accordion {
+#accordion {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: calc(0.25rem - 1px);
-}
-
-/* The next three classes center warmup weight stuff */
-.weightLeft {
-    margin-left: auto;
-}
-
-.weightImg {
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.weightRight {
-    margin-right: auto;
 }
