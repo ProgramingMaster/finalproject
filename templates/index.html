@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <!-- Kinda like a nav bar -->
+    <!-- This acts kinda like a nav bar -->
     <div class="card-header">
         <div class="row m-0">
             <h2 class="col-sm">
@@ -22,18 +22,21 @@
             <!-- Makes a list of expandable cards for each workout -->
             {% for workout in workouts %}
                 <div class="card center">
+                    <!-- Header -->
                     <div class="card-header" id="heading{{ workout.id }}">
                         <div class="row">
                             <!-- workout name and weight -->
                             <h2 class="mb-0 col-sm">
                                 {{ workout.name }}: {{ workout.weight }}
                             </h2>
+
                             <!-- Expands the edit section -->
                             <h2 class="mb-0 mr-1 col- ml-auto">
                                 <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
                                     Edit
                                 </button>
                             </h2>
+
                             <!-- Expands the calculate section and calls a js function that calculates and displays the weights to put on the bar for that workout -->
                             <h2 class="col- mb-0 mr-auto">
                                 <form onsubmit="calWeights({{ workout.id }}, {{ workout.weight }}); return false">
@@ -50,7 +53,9 @@
                         <div class="card-body">
                             <form action="/" method="post">
                                 <div class="form-group">
+                                    <!-- This invisible input is here so that the server can know what workout you want to edit by grabing it here    -->
                                     <input class="invisible" name="workout" value="{{ workout.name }}">
+
                                     <input class="form-control" type="number" name="weight" placeholder="New weight">
                                     <button type="submit" class="btn btn-primary mt-2">Change</button>
                                 </div>
@@ -70,7 +75,7 @@
 
 
                             <!-- Calculate warmup weights -->
-                            <form onsubmit="calPercent({{ workout.id }}, {{ workout.weight }}, percent.value); return false">
+                            <form onsubmit="calWarmup({{ workout.id }}, {{ workout.weight }}, percent.value); return false">
                                 <div class="form-group">
                                     <input class="form-control" id="percent" type="number" placeholder="Percent">
                                     <button type="submit" class="btn btn-primary mt-2">Calculate Warmup</button>

@@ -57,7 +57,7 @@ def index():
             flash("Weight must be a non negative integer", "danger")
             return redirect('/')
 
-        # turn weight into an integer
+        # Turn weight into an integer
         weight = int(weight)
 
         # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs)
@@ -216,7 +216,6 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
         # Ensure username was submitted
         if not request.form.get("username"):
             flash("must provide username", "danger")
