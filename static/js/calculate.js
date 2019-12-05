@@ -11,7 +11,6 @@ If you've tried all the possible weights, then return the result arr like normal
 that shows the remainding weight that needs to be added to each side.
   Another important note is that this function doesn't actually return just the result arr. It returns
 result array as a string with a <br> tag between each element (which makes the string vertical).
-
 */
 let weightsToAdd = function(id, weight) {
     // Posible weights
@@ -30,7 +29,6 @@ let weightsToAdd = function(id, weight) {
 
     // What weight your trying to add
     i = 0
-
 
     while (weight !== 0) {
         // So you've gone through all possible weights and your still not at zero then show the remainding weight
@@ -67,21 +65,14 @@ let calWeights = function(id, weight) {
     }
 }
 
-// function error(message) {
-//     $("#err").css("display", "block")
-//     $("#err p").text(message)
-// }
-
 let calWarmup = function(id, weight, percent){
     // Ensure percent was submitted
     if (percent === '') {
-        //error('Please input percent')
         return
     }
 
     // Ensure percent was (formatted as) a positive integer
     if (percent.search(/\D|(^0+$)/) != -1) {
-        //error('Percent must be a positive integer')
         return
     }
 
@@ -90,7 +81,6 @@ let calWarmup = function(id, weight, percent){
 
     // Ensure percent is less than 100
     if (percent >= 100) {
-        //error('Percent must be less than 100')
         return
     }
 
