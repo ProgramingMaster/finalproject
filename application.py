@@ -28,7 +28,7 @@ def after_request(response):
 # Set up local database on development mode. Also configures the SESSION_FILE_DIR
 # (which is needed on development mode but messes up production mode)
 if os.environ.get('APPLICATION_ENV') == 'dev':
-    #app.config["SESSION_FILE_DIR"] = mkdtemp()
+    app.config["SESSION_FILE_DIR"] = mkdtemp()
     db = SQL("sqlite:///finalproject.db")
 # Set up stuff in production mode
 else:
@@ -131,7 +131,7 @@ def create():
 
         # Ensure name is not longer then 200 characters
         if len(name) > 200:
-            flash("name must not be longer then 100 characters")
+            flash("name must not be longer then 200 characters", "danger")
             return redirect("/create")
 
         # Ensure current is (formatted as) a non negative integer
