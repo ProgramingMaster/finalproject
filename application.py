@@ -49,6 +49,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Filter for scaling the font size of text based on the length of the text
 app.jinja_env.filters["scaleSize"] = scaleSize
 
 
@@ -239,7 +240,6 @@ def signup():
 def login():
     """Log user in"""
 
-    # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         username = request.form.get("username")
         # Ensure username was submitted
@@ -267,7 +267,6 @@ def login():
         # Redirect user to home page
         return redirect("/")
 
-    # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
 

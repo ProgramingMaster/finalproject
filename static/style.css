@@ -19,9 +19,3 @@ body {
     /* override Bootstrap's 100% width for form controls */
     width: auto;
 }
-
-/* Puts in the bottom line that disappears if there's only one item in the accordian */
-#accordion {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: calc(0.25rem - 1px);
-}
