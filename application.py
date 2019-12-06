@@ -69,7 +69,7 @@ def index():
         weight = int(weight)
 
         # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs)
-        if weight > 2000:
+        if weight > 5000:
             flash("There's no way your lifting that weight", "danger")
             return redirect("/")
 
@@ -189,6 +189,16 @@ def signup():
         # Ensure confirmation password was submitted
         if not confirmation:
             flash("must provide confirmation password", "danger")
+            return redirect("/signup")
+
+        # Check if username is too long
+        if len(username) > 200:
+            flash("username is too long", "danger")
+            return redirect("/signup")
+
+        # Check if password is too long
+        if len(password) > 200:
+            flash("password is too long", "danger")
             return redirect("/signup")
 
         # Ensure password and confirmation password match
