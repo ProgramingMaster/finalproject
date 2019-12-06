@@ -51,7 +51,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Filter for scaling the font size of text based on the length of the text
+# Pipe for scaling the font size of text based on the length of the text
 app.jinja_env.filters["scaleSize"] = scaleSize
 
 
@@ -81,7 +81,7 @@ def index():
             flash("There's no way your lifting that weight", "danger")
             return redirect("/")
 
-        # Grab the workout you want to edit the weight of (this is grabed from an invisible form whose value is already set to whatever workout your on)
+        # Grab the workout you want to edit the weight of (this is grabbed from an invisible form whose value is already set to whatever workout your on)
         workout = request.form.get("workout")
 
         # Ensure workout was submitted
@@ -129,8 +129,8 @@ def create():
             flash("must provide name of workout", "danger")
             return redirect("/create")
 
-        # Ensure name is not longer then 100 characters
-        if len(name) > 100:
+        # Ensure name is not longer then 200 characters
+        if len(name) > 200:
             flash("name must not be longer then 100 characters")
             return redirect("/create")
 

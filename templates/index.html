@@ -52,7 +52,7 @@
                                     <!-- This invisible input is here so that the server can know what workout you want to edit by grabing it here    -->
                                     <input class="invisible" name="workout" value="{{ workout.name }}">
 
-                                    <input class="form-control" type="number" name="weight" placeholder="New weight" required>
+                                    <input class="form-control" type="number" name="weight" placeholder="New weight" required min="0" max="5000">
                                     <button type="submit" class="btn btn-primary mt-2">Change</button>
                                 </div>
                             </form>
@@ -73,7 +73,7 @@
                             <!-- Calculate warmup weights -->
                             <form onsubmit="calWarmup({{ workout.id }}, {{ workout.weight }}, percent.value); return false">
                                 <div class="form-group">
-                                    <input class="form-control" id="percent" type="number" placeholder="Percent" required>
+                                    <input class="form-control" id="percent" type="number" placeholder="Percent" required min="1" max="99">
                                     <button type="submit" class="btn btn-primary mt-2">Calculate Warmup</button>
                                 </div>
                             </form>
