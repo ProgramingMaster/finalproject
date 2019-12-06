@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required
+from helpers import login_required, scaleSize
 import re
 
 app = Flask(__name__)
@@ -29,15 +29,18 @@ def after_request(response):
 if os.environ.get('APPLICATION_ENV') == 'dev':
     app.config["SESSION_FILE_DIR"] = mkdtemp()
     db = SQL("sqlite:///finalproject.db")
+# Set up stuff in production mode
 else:
-    # Reroute to https if on http in production mode
+    # Reroute to https if on http
+    # https://stackoverflow.com/questions/32237379/python-flask-redirect-to-https-from-http/50041843
     @app.before_request
     def before_request():
         if request.url.startswith('http://'):
             url = request.url.replace('http://', 'https://', 1)
             code = 301
             return redirect(url, code=code)
-    # Set up heroku database on production mode
+
+    # Set up heroku database
     app.secret_key = 'asdjfklajsfd'
     db = SQL("postgres://zcjxmflvvdjgej:842176674c37fbc83dcc95627716e96dfaf311b1f8b67a50ec52395ee7a5fcbf@ec2-23-21-249-0.compute-1.amazonaws.com:5432/d6dvfncect3bc")
 
@@ -45,6 +48,8 @@ else:
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+app.jinja_env.filters["scaleSize"] = scaleSize
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -135,7 +140,7 @@ def create():
         current = int(current)
 
         # Ensure current is not an enormous number (the largest deadlift is 1102 lbs)
-        if current > 2000:
+        if current > 5000:
             flash("There's no way your lifting that weight", "danger")
             return redirect("/create")
 

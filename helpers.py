@@ -1,6 +1,9 @@
 from flask import redirect, session
 from functools import wraps
+import math
 
+def scaleSize(text):
+    return round(100 / math.log(len(text)*10))
 
 def login_required(f):
     """

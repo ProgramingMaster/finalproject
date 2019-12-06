@@ -22,7 +22,7 @@
                     <div class="card-header" id="heading{{ workout.id }}">
                         <div class="row">
                             <!-- workout name and weight -->
-                            <h2 class="mb-0 col-sm">
+                            <h2 class="mb-0 col-sm" style="font-size: {{ (workout.name ~ workout.weight) | scaleSize }}px">
                                 {{ workout.name }}: {{ workout.weight }}
                             </h2>
 
