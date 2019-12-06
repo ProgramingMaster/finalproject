@@ -136,7 +136,7 @@ def create():
 
         # Ensure current is not an enormous number (the largest deadlift is 1102 lbs)
         if current > 2000:
-            flash("There's no way your lifting that weight")
+            flash("There's no way your lifting that weight", "danger")
             return redirect("/create")
 
         # format name correctly

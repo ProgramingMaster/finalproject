@@ -52,7 +52,7 @@
                                     <!-- This invisible input is here so that the server can know what workout you want to edit by grabing it here    -->
                                     <input class="invisible" name="workout" value="{{ workout.name }}">
 
-                                    <input class="form-control" type="number" name="weight" placeholder="New weight">
+                                    <input class="form-control" type="number" name="weight" placeholder="New weight" required>
                                     <button type="submit" class="btn btn-primary mt-2">Change</button>
                                 </div>
                             </form>
@@ -73,7 +73,7 @@
                             <!-- Calculate warmup weights -->
                             <form onsubmit="calWarmup({{ workout.id }}, {{ workout.weight }}, percent.value); return false">
                                 <div class="form-group">
-                                    <input class="form-control" id="percent" type="number" placeholder="Percent">
+                                    <input class="form-control" id="percent" type="number" placeholder="Percent" required>
                                     <button type="submit" class="btn btn-primary mt-2">Calculate Warmup</button>
                                 </div>
                             </form>
@@ -84,7 +84,7 @@
                             <!-- Show what weights to put on the bar for the warmup -->
                             <div class="row">
                                 <h5 class="col- mr-2 ml-auto align-self-center" id="warmupLeft{{ workout.id }}"></h5>
-                                <img id="warmupWeights{{ workout.id }}" class="warmupWeights col- mb-2 align-self-center" src="../static/assets/barbell.png" class="pb-2" width="100px" height="50px">
+                                <img id="warmupWeights{{ workout.id }}" class="warmupWeights col- mb-2 align-self-center" src="../static/assets/barbell.png" class="pb-2" width="80px" height="40px">
                                 <h5 class="col- ml-2 mr-auto align-self-center" id="warmupRight{{ workout.id }}"></h5>
                             </div>
                         </div>
