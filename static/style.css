@@ -2,6 +2,10 @@ body {
     background-color: #013029;
 }
 
+.warmupWeights {
+    display: none;
+}
+
 /* centers stuff */
 .center {
     text-align: center;

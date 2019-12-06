@@ -114,11 +114,16 @@ def create():
         name = request.form.get("name")
 
         # Grab your current weight on the workout, but since this isn't required, set it to zero if not given
-        current = request.form.get("current") if request.form.get("current") else 0
+        current = request.form.get("current") if request.form.get("current") else "0"
 
         # Ensure name was submitted
         if not name:
             flash("must provide name of workout", "danger")
+            return redirect("/create")
+
+        # Ensure name is not longer then 100 characters
+        if len(name) > 100:
+            flash("name must not be longer then 100 characters")
             return redirect("/create")
 
         # Ensure current is (formatted as) a non negative integer
@@ -126,16 +131,16 @@ def create():
             flash("Current weight must be a non negative integer", "danger")
             return redirect('/')
 
-        # turn weight into an integer
+        # Turn weight into an integer
         current = int(current)
 
-        # Ensure current is not a enormous number (the largest deadlift is 1102 lbs)
+        # Ensure current is not an enormous number (the largest deadlift is 1102 lbs)
         if current > 2000:
             flash("There's no way your lifting that weight")
             return redirect("/create")
 
         # format name correctly
-        name = name.lower().capitalize()
+        name = name.lower().title()
 
         # Query datbase for workout
         workout = db.execute("SELECT * FROM workouts WHERE userId = :userId AND name = :name",
@@ -153,7 +158,7 @@ def create():
         # Show success!
         flash("Created!", "primary")
 
-        return redirect("/")
+        return redirect("/create")
 
     else:
         return render_template("create.html")

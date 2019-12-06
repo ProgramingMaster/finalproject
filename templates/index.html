@@ -1,9 +1,5 @@
 {% extends "layout.html" %}
 
-{% block title %}
-    CSLifty
-{% endblock %}
-
 {% block main %}
     <!-- This acts kinda like a nav bar -->
     <div class="card-header">
@@ -88,7 +84,7 @@
                             <!-- Show what weights to put on the bar for the warmup -->
                             <div class="row">
                                 <h5 class="col- mr-2 ml-auto align-self-center" id="warmupLeft{{ workout.id }}"></h5>
-                                <img class="col- mb-2 align-self-center" src="../static/assets/barbell.png" class="pb-2" width="100px" height="50px">
+                                <img id="warmupWeights{{ workout.id }}" class="warmupWeights col- mb-2 align-self-center" src="../static/assets/barbell.png" class="pb-2" width="100px" height="50px">
                                 <h5 class="col- ml-2 mr-auto align-self-center" id="warmupRight{{ workout.id }}"></h5>
                             </div>
                         </div>
