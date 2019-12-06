@@ -3,9 +3,13 @@ from functools import wraps
 import math
 
 # Scale the font size of text based on the length of the text
+
+
 def scaleSize(text):
     return round(100 / math.log(len(text)*10))
 
+
+# Login Guard
 def login_required(f):
     """
     Decorate routes to require login.
