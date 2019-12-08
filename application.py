@@ -77,8 +77,8 @@ def index():
 
         # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs). The site will crash if you
         # click the calculate button on a workout with a weight to large (though that's more like 50,000)
-        if weight > 5000:
-            return error("There's no way your lifting that weight")
+        if weight > 1200:
+            return error("Weight must not be greater than 1200")
 
         # Grab the workout you want to edit the weight of (this is grabbed from an invisible form whose value is already set to whatever workout your on)
         workout = request.form.get("workout")
@@ -133,8 +133,8 @@ def create():
         current = int(current)
 
         # Ensure current is not an enormous number (the largest deadlift is 1102 lbs)
-        if current > 5000:
-            return error("There's no way your lifting that weight")
+        if current > 1200:
+            return error("Current weight must not be greater than 1200")
 
         # format name correctly
         name = name.lower().title()

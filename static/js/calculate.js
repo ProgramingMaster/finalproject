@@ -48,20 +48,6 @@ function calWarmup(id, weight, percent) {
     $('#warmupWeights' + id).css("display", "inline")
 }
 
-/*
-  This function finds what weights to put on either side of the bar. After first subtracting the weight
-of the bar from your weight, it starts at the beginning of the weights array and simulates adding
-those weights to both sides of the bar by subtracting those weights from your weight.
-  If the total weight is still greater than or equal to zero, then your can add those weights to the bar
-(the result arr) without going over your weight. An important note is that you only add one of those
-weights to the result arr. This is because the entire result arr will be shown twice (once on each side
-of the bar). If your weight is now zero then your done and can return the result arr.
-  Otherwise, if your weight is now less than zero, then try a smaller weight (by incrementing i).
-If you've tried all the possible weights, then return the result arr like normal but with an extra line
-that shows the remainding weight that needs to be added to each side.
-  Another important note is that this function doesn't actually return just the result arr. It returns
-result array as a string with a <br> tag between each element (which makes the string vertical).
-*/
 function weightsToAdd(id, weight) {
     // Posible weights
     let weights = [45, 35, 25, 10, 5, 2.5]
