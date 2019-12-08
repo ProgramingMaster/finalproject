@@ -50,7 +50,7 @@
                             <form action="/" method="post">
                                 <div class="form-group">
                                     <!-- This invisible input is here so that the server can know what workout you want to edit by grabing it here    -->
-                                    <input class="invisible" name="workout" value="{{ workout.name }}">
+                                    <input class="hidden" name="workout" value="{{ workout.name }}">
                                     <div class="center">
                                         <label for="weight">New Weight</label>
                                         <input class="form-control" type="number" id="weight" name="weight" required min=0 max=1200>
@@ -87,7 +87,7 @@
                             <!-- Show what weights to put on the bar for the warmup -->
                             <div class="row">
                                 <h5 class="col- mr-2 ml-auto align-self-center" id="warmupLeft{{ workout.id }}"></h5>
-                                <img id="warmupWeights{{ workout.id }}" class="warmupWeights col- mb-2 align-self-center" src="../static/assets/barbell.png" class="pb-2" width="80px" height="40px">
+                                <img id="warmupWeights{{ workout.id }}" class="hidden col- mb-2 align-self-center" src="../static/assets/barbell.png" class="pb-2" width="80px" height="40px">
                                 <h5 class="col- ml-2 mr-auto align-self-center" id="warmupRight{{ workout.id }}"></h5>
                             </div>
                         </div>

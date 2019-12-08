@@ -66,7 +66,7 @@ def index():
 
         # Ensure weight was submitted
         if not weight:
-            return error("must provide new weight")
+            return error("Must provide new weight")
 
         # Ensure weight is (formatted as) a non negative integer
         if not re.search("\D", weight) == None:
@@ -85,7 +85,7 @@ def index():
 
         # Ensure workout was submitted
         if not workout:
-            return error("must provide new weight")
+            return error("Must provide workout")
 
         # Query database for workout
         workout = db.execute("SELECT id FROM workouts WHERE userId = :userId AND name = :workout",
@@ -123,7 +123,7 @@ def create():
 
         # Ensure name was submitted
         if not name:
-            return error("must provide name of workout")
+            return error("Must provide name of workout")
 
         # Ensure current is (formatted as) a non negative integer
         if not re.search("\D", current) == None:
@@ -145,7 +145,7 @@ def create():
 
         # Ensure the workout doesn't already exist
         if len(workout) > 0:
-            return error("that workout already exists")
+            return error("That workout already exists")
 
         # Add workout
         db.execute("INSERT INTO workouts (userId, name, weight) VALUES (:userId, :name, :weight)",
@@ -174,19 +174,19 @@ def signup():
 
         # Ensure username was submitted
         if not username:
-            return error("must provide username")
+            return error("Must provide username")
 
         # Ensure password was submitted
         if not password:
-            return error("must provide password")
+            return error("Must provide password")
 
         # Ensure confirmation password was submitted
         if not confirmation:
-            return error("must provide confirmation password")
+            return error("Must provide confirmation password")
 
         # Ensure password and confirmation password match
         if not confirmation == password:
-            return error("password and confimation password don't match")
+            return error("Password and confimation password don't match")
 
         # Query database for username
         user = db.execute("SELECT * FROM users WHERE username = :username",
@@ -194,7 +194,7 @@ def signup():
 
         # Check if username already exist
         if len(user) != 0:
-            flash("username is not available", "danger")
+            flash("Username is not available", "danger")
             return redirect("/signup")
 
         # Add user
@@ -220,11 +220,11 @@ def login():
         username = request.form.get("username")
         # Ensure username was submitted
         if not username:
-            return error("must provide username")
+            return error("Must provide username")
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return error("must provide password")
+            return error("Must provide password")
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
@@ -232,7 +232,7 @@ def login():
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return error("invalid username and/or password")
+            return error("Invalid username and/or password")
 
         # Remember which user has logged in
         session["userId"] = rows[0]["id"]
