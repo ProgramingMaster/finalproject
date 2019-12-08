@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required, scaleSize
+from helpers import loginRequired, scaleSize
 import re
 
 # Configure application
@@ -42,11 +42,12 @@ else:
             return redirect(url, code=code)
 
     # Set up heroku database
+    # I looked at many different ways to add a secret key. This one worked, but I'm not sure where exactly I got it
+    # from. Probably a few different websites.
     app.secret_key = 'asdjfklajsfd'
     db = SQL("postgres://zcjxmflvvdjgej:842176674c37fbc83dcc95627716e96dfaf311b1f8b67a50ec52395ee7a5fcbf@ec2-23-21-249-0.compute-1.amazonaws.com:5432/d6dvfncect3bc")
 
 # Configure session to use filesystem (instead of signed cookies)
-#app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -56,7 +57,7 @@ app.jinja_env.filters["scaleSize"] = scaleSize
 
 
 @app.route("/", methods=["GET", "POST"])
-@login_required
+@loginRequired
 def index():
     # Edits weight on a workout if request method is post
     if request.method == "POST":
@@ -65,7 +66,7 @@ def index():
 
         # Ensure weight was submitted
         if not weight:
-            flash("must provide new weight")
+            flash("must provide new weight", "danger")
             return redirect("/")
 
         # Ensure weight is (formatted as) a non negative integer
@@ -115,7 +116,7 @@ def index():
 
 
 @app.route("/create", methods=["GET", "POST"])
-@login_required
+@loginRequired
 def create():
     if request.method == "POST":
         # Grab the name of the workout your creating

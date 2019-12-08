@@ -51,8 +51,8 @@ the current weight input on the create page.
   ###__Calculate__
   The calculate button also expands the card, but shows something different. It shows a barbell image with a
 vertical row of numbers on each side. The numbers represent what weights to put on that side of the barbell
-(the numbers will always be the same on both sides). The weights are conventional gym weights: 45, 35, 25, 10, 5,
-and 2.5.
+(the numbers will always be the same on both sides as to keep the bar balanced). The weights are conventional
+gym weights: 45, 35, 25, 10, 5, and 2.5.
 
   Sometimes one of the numbers (on each side) will have an R: prefixing it. This stands for remainder, and
 means that you have that number left to put on each side, but that number is not a conventional gym weight, which

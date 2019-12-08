@@ -27,8 +27,8 @@
                             </h2>
 
                             <!-- Expands the edit section -->
-                            <h2 class="mb-0 mr-1 col- ml-auto shadow-none">
-                                <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
+                            <h2 class="mb-0 mr-1 col- ml-auto">
+                                <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#edit{{ workout.id }}" aria-expanded="true" aria-controls="collapse">
                                     Edit
                                 </button>
                             </h2>
@@ -45,7 +45,7 @@
                     </div>
 
                     <!-- Edit Section -->
-                    <div id="collapse{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
+                    <div id="edit{{ workout.id }}" class="collapse" aria-labelledby="heading{{ workout.id }}" data-parent="#accordion">
                         <div class="card-body">
                             <form action="/" method="post">
                                 <div class="form-group">
