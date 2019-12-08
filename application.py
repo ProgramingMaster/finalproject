@@ -106,7 +106,7 @@ def index():
 
     else:
         # Get all of the user's workouts
-        workouts = db.execute("SELECT * FROM workouts WHERE userId = :userId", userId=session["userId"])
+        workouts = db.execute("SELECT * FROM workouts WHERE userId = :userId ORDER BY name", userId=session["userId"])
 
         return render_template("index.html", workouts=workouts)
 
