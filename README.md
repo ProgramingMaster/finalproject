@@ -15,11 +15,12 @@ weights to put on the bar, and calculate different percentages of your weight (f
 
   There's some text below the form that says, "Don't have an account? Sign up!"
 
+  Clicking signup will bring you to the signup form.
+
   ###__Sign up__
-  Clicking signup will bring you to the signup form. The signup form is pretty standard. It will ask you for a
-username, and a password, along with a confirmation password which h
-as to match the password. Also, the username and password can't be longer than 200 characters long. Most the inputs
-have basic html validators on them (required, max-value, number), but the server double checks everything of course.
+  The signup form is pretty standard. It will ask you for a username, and a password, along with a confirmation
+password which has to match the password. Most the inputs on the site have basic html validators on them (required
+and number), but the server double checks everything of course.
 
   There's also some text below the signup form that says, "Already have an account? Log in!"
 
@@ -39,9 +40,9 @@ also be a non negative integer not greater than 5000 (because __no one's__ lifti
 
   ###__Create Page__
   While on the create page, the button that use to say "create workout" will now say "back to workouts" which
-will bring you back to the index page. Once you've
-created a workout, the index page will have an expandable card below the buttons showing the name of your workout
-and what weight your going them at. Creating more workouts will add more cards.
+will bring you back to the index page. Once you've created a workout, the index page will have an expandable card
+below the buttons showing the name of your workout and what weight your going them at. Creating more workouts will
+add more cards.
 
   ###__Edit__
   Each workout has two buttons to the left of it (or below it if you're on a small screen). The edit button expands
@@ -63,8 +64,8 @@ it will just show zeros on each side, since you don't need to put any weights on
 
   Strength trainers also warmup before doing there full weight by just doing 50% or 70% of there total weight.
 There's a form below the barbell image for just that. You enter what percent of your total weight you want to do
-(it must be a positive integer less than 100), and that weight will appear below it. A barbell (just like the first
-one) will appear to show what weights to put on the bar to get to that weight.
+(it must be an integer between 1 and 99 inclusive), and that weight will appear below it. A barbell (just like the
+first one) will appear to show what weights to put on the bar to get to that weight.
 
   The calculation section is what makes this app a *barbell* strength training app. You could still use it to keep
 track of any exercises you have that uses weights. But unless your using a 45lb barbell, the calculations won't

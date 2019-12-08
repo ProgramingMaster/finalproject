@@ -75,7 +75,8 @@ def index():
         # Turn weight into an integer
         weight = int(weight)
 
-        # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs)
+        # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs). The site will crash if you
+        # click the calculate button on a workout with a weight to large (though that's more like 50,000)
         if weight > 5000:
             return error("There's no way your lifting that weight")
 
@@ -123,10 +124,6 @@ def create():
         # Ensure name was submitted
         if not name:
             return error("must provide name of workout")
-
-        # Ensure name is not longer then 200 characters
-        if len(name) > 200:
-            return error("name must not be longer then 200 characters")
 
         # Ensure current is (formatted as) a non negative integer
         if not re.search("\D", current) == None:
@@ -186,14 +183,6 @@ def signup():
         # Ensure confirmation password was submitted
         if not confirmation:
             return error("must provide confirmation password")
-
-        # Check if username is too long
-        if len(username) > 200:
-            return error("username is too long")
-
-        # Check if password is too long
-        if len(password) > 200:
-            return error("password is too long")
 
         # Ensure password and confirmation password match
         if not confirmation == password:
