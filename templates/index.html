@@ -51,8 +51,10 @@
                                 <div class="form-group">
                                     <!-- This invisible input is here so that the server can know what workout you want to edit by grabing it here    -->
                                     <input class="invisible" name="workout" value="{{ workout.name }}">
-
-                                    <input class="form-control" type="number" name="weight" placeholder="New weight" required>
+                                    <div class="center">
+                                        <label for="weight">New Weight</label>
+                                        <input class="form-control" type="number" id="weight" name="weight" required min=0 max=1200>
+                                    </div>
                                     <button type="submit" class="btn btn-primary mt-2">Change</button>
                                 </div>
                             </form>
