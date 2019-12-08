@@ -4,12 +4,13 @@ This is a flask app hosted on heroku using a postgres database.__
         ##application.py
 
     ### Errors & successess
-  Instead of using apology, I flash a message with the danger category and redirect them to whereever they are.
-I use flash categories (the second argument of the flash function) to distinguish between when I'm using flash
-for errors or successess. Whenever an error happens I use the "danger" category and redirect them to where ever
-they are now. The reason I redirect instead of using render template is because I might be doing more stuff then
-just rendering the template if the page was requested via GET (like in index where I'm grabing all of the user's
-workouts).
+  Instead of using apology, I wrote a new function in helpers.py called error that flashes a message with a
+category (the second argument of the flash function) of "danger" and redirects them to wherever they are. The
+reason I redirect instead of using render template is because I might be doing more stuff then just rendering the
+template if the page was requested via GET (like in index where I'm grabing all of the user's workouts).
+
+  I also use flash for successes (using a category of "primary"), but I didn't make a function for it because I
+would only use it three times, and it's looks nicer if you can see that I'm redirecting at the end.
 
 
     ###Configurations:
@@ -126,12 +127,16 @@ h fives have ids that include the dynamic id of the workout in them. That's you 
 workout in the function.
 
   Below this is a form that lets you calculate the weight of your warmup (which is some percent of your total
-weight), along with what weights to put on the bar for that warmup. The form calls calWarmup which is very
-similar to calWeights, except it also takes as input what percent of your total weight you want to use for your
-warmup. It displays the warmup weight on the h five with the id of warmupTotal{{ workout.id }}. Below it there's
-a row that's just like the one above it, it displays what weights to put on the bar. The bar image is initially
-has a display of none (all the other h fives are also invisible since they don't initially have anything in them),
-but the calWarmup function also sets the barbell display to inline.
+weight), along with what weights to put on the bar for that warmup. The input is required and the min and max
+attributes are set to 1 and 99 respectivly. The input also has a label on it, I didn't use a placeholder because
+the input is too small to have one when you have a max value.
+
+  The form then calls calWarmup which is very similar to calWeights, except it also takes as input what percent
+of your total weight you want to use for your warmup. It displays the warmup weight on the h five with the id of
+warmupTotal{{ workout.id }}. Below it there's a row that's just like the one above it, it displays what weights
+to put on the bar. The bar image is initially has a display of none (all the other h fives are also invisible
+since they don't initially have anything in them), but the calWarmup function also sets the barbell display to
+inline.
 
     ###create.html
   This has the same nav bar thing as index.html. It also has a basic form that allows you to create a workout.
@@ -163,17 +168,20 @@ signup page at the bottom.
   password have a max length of 200. I also have a link to the login page at the bottom.
 
       ##helpers.py
-  helpers.py has two functions, a scaleSize function and a loginRequired function. The loginRequired function is
-exactly like the cs50 Finance login_required function, except all the function names a camelCased because I like
-that better.
+  helpers.py has three functions, a scaleSize function, a error function, and a loginRequired function. The
+loginRequired function is exactly like the cs50 Finance login_required function, except all the function names a
+camelCased because I like that better.
 
-  The scaleSize function is the interesting one. I use it to make long workout names (and weights) in the index
+  The scaleSize function is an interesting one. I use it to make long workout names (and weights) in the index
 page don't take up so much space. The formula for doing this is complicated, I'm going to disset it for you. I take
 the length of the text, multiply it by ten, for the log base 10 of it, divide it into 100, then round it to the
 nearest integer. Lets go through why I do all this. I divide it into 100 so that big numbers will return small
 numbers and vice versa. I find the log of it so that there all the numbers are close together. The log of 10 is
 one, and the log of 100 is two. I multiply it by ten so that it gives bigger numbers, and I do that before finding
 the log so that it doesn't make drastic values.
+
+  The error function just flashes a message with the "danger" category. I get the url the user is currently at
+with request.url and then I redirct the user there.
 
       ## calculate.js
   calculate.js has three functions, calWeights, calWarmup and weightsToAdd. The calWeights function displays what
@@ -208,7 +216,7 @@ If you've tried all the possible weights, then return the result arr like normal
 that shows the remainding weight that needs to be added to each side.
 
   Another important note is that this function doesn't actually return just the result arr. It returns
-result array as a string with a <br> tag between each element (which makes the string vertical).
+result array as a string with a br tag between each element (which makes the string vertical).
 
       ##helpers.js
   This file only has one function, disable, which is only used in create.html to temporaly disable the button when

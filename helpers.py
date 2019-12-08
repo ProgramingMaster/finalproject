@@ -1,4 +1,4 @@
-from flask import redirect, session
+from flask import redirect, session, flash, request
 from functools import wraps
 import math
 
@@ -7,6 +7,13 @@ import math
 def scaleSize(text):
     return round(100 / math.log(len(text)*10))
 
+def error(message):
+    flash(message, "danger")
+    return redirect(request.url)
+
+def success(message):
+    flash(message, "primary")
+    return redirect(request.url)
 
 # Login Guard
 def loginRequired(f):

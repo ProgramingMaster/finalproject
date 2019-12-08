@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import loginRequired, scaleSize
+from helpers import loginRequired, scaleSize, error
 import re
 
 # Configure application
@@ -66,29 +66,25 @@ def index():
 
         # Ensure weight was submitted
         if not weight:
-            flash("must provide new weight", "danger")
-            return redirect("/")
+            return error("must provide new weight")
 
         # Ensure weight is (formatted as) a non negative integer
         if not re.search("\D", weight) == None:
-            flash("Weight must be a non negative integer", "danger")
-            return redirect('/')
+            return error("Weight must be a non negative integer")
 
         # Turn weight into an integer
         weight = int(weight)
 
         # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs)
         if weight > 5000:
-            flash("There's no way your lifting that weight", "danger")
-            return redirect("/")
+            return error("There's no way your lifting that weight")
 
         # Grab the workout you want to edit the weight of (this is grabbed from an invisible form whose value is already set to whatever workout your on)
         workout = request.form.get("workout")
 
         # Ensure workout was submitted
         if not workout:
-            flash("must provide new weight", "danger")
-            return redirect("/")
+            return error("must provide new weight")
 
         # Query database for workout
         workout = db.execute("SELECT id FROM workouts WHERE userId = :userId AND name = :workout",
@@ -96,8 +92,7 @@ def index():
 
         # Ensure the workout exists
         if len(workout) == 0:
-            flash("That workout doesn't exist", "danger")
-            return redirect("/")
+            return error("That workout doesn't exist")
 
         # Update weight
         db.execute("UPDATE workouts SET weight = :weight WHERE id = :id",
@@ -127,26 +122,22 @@ def create():
 
         # Ensure name was submitted
         if not name:
-            flash("must provide name of workout", "danger")
-            return redirect("/create")
+            return error("must provide name of workout")
 
         # Ensure name is not longer then 200 characters
         if len(name) > 200:
-            flash("name must not be longer then 200 characters", "danger")
-            return redirect("/create")
+            return error("name must not be longer then 200 characters")
 
         # Ensure current is (formatted as) a non negative integer
         if not re.search("\D", current) == None:
-            flash("Current weight must be a non negative integer", "danger")
-            return redirect('/')
+            return error("Current weight must be a non negative integer")
 
         # Turn weight into an integer
         current = int(current)
 
         # Ensure current is not an enormous number (the largest deadlift is 1102 lbs)
         if current > 5000:
-            flash("There's no way your lifting that weight", "danger")
-            return redirect("/create")
+            return error("There's no way your lifting that weight")
 
         # format name correctly
         name = name.lower().title()
@@ -157,8 +148,7 @@ def create():
 
         # Ensure the workout doesn't already exist
         if len(workout) > 0:
-            flash("that workout already exists", "danger")
-            return redirect("/create")
+            return error("that workout already exists")
 
         # Add workout
         db.execute("INSERT INTO workouts (userId, name, weight) VALUES (:userId, :name, :weight)",
@@ -187,33 +177,27 @@ def signup():
 
         # Ensure username was submitted
         if not username:
-            flash("must provide username", "danger")
-            return redirect("/signup")
+            return error("must provide username")
 
         # Ensure password was submitted
         if not password:
-            flash("must provide password", "danger")
-            return redirect("/signup")
+            return error("must provide password")
 
         # Ensure confirmation password was submitted
         if not confirmation:
-            flash("must provide confirmation password", "danger")
-            return redirect("/signup")
+            return error("must provide confirmation password")
 
         # Check if username is too long
         if len(username) > 200:
-            flash("username is too long", "danger")
-            return redirect("/signup")
+            return error("username is too long")
 
         # Check if password is too long
         if len(password) > 200:
-            flash("password is too long", "danger")
-            return redirect("/signup")
+            return error("password is too long")
 
         # Ensure password and confirmation password match
         if not confirmation == password:
-            flash("password and confimation password don't match", "danger")
-            return redirect("/signup")
+            return error("password and confimation password don't match")
 
         # Query database for username
         user = db.execute("SELECT * FROM users WHERE username = :username",
@@ -247,13 +231,11 @@ def login():
         username = request.form.get("username")
         # Ensure username was submitted
         if not username:
-            flash("must provide username", "danger")
-            return redirect("/login")
+            return error("must provide username")
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            flash("must provide password", "danger")
-            return redirect("/login")
+            return error("must provide password")
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
@@ -261,8 +243,7 @@ def login():
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            flash("invalid username and/or password", "danger")
-            return redirect("/login")
+            return error("invalid username and/or password")
 
         # Remember which user has logged in
         session["userId"] = rows[0]["id"]
@@ -289,8 +270,7 @@ def errorhandler(e):
     """Handle error"""
     if not isinstance(e, HTTPException):
         e = InternalServerError()
-    flash(f"{e.name} – {e.code}", "danger")
-    return redirect(request.url)
+    return error(f"{e.name} – {e.code}")
 
 
 # Listen for errors
