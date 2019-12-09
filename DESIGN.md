@@ -6,7 +6,7 @@ This is a flask app hosted on Heroku using a Postgres database.
 
     ###Configurations:
   Application.py starts off with importing some stuff (including helper functions from helper.py) and doing some
-basic configurations from cs50 Finance. Then it does some stuff based on if your in development mode (running the
+basic configurations from cs50 Finance. Then it does some stuff based on if you're in development mode (running the
 site locally via flask run) or production mode (visiting the site hosted on Heroku via going to
 cslifty.herokuapp.com).
 
@@ -32,7 +32,9 @@ workout. It grabs the name of the workout you want to change and the weight that
 does this by using regex to look for anything that's not a digit. This also checks if the weight is negative
 or a decimal number since decimals and negative signs are not digits.
 
-  Then it ensures the weight isn't larger than 1200 (the world record deadlift weight is 1102).
+  Then it ensures the weight isn't larger than 1200 (the world record deadlift weight is 1102). I don't have a great reason for
+setting the limit there. It's just a limit that no one who's using my app will ever get to. The weightsToAdd function (which I talk
+about later) can't handle big numbers, though it can handle a lot more than 1200.
 
   After that, it ensures the workout exists by querying the database for it. It also grabs the id of the workout
 gotten from the database to use later when updating the weight.
@@ -42,7 +44,7 @@ you. This is because each edit form is specific to that workout anyways; I just 
 what workout you're trying to edit. Of course, a malicious user could still go into the code and change it, which is
 why I double-check server-side.
 
-  Finally, it looks for what workout to change by searching for its id (grabbed earlier) and changes it's weight
+  Finally, it looks for what workout to change by searching for its id (grabbed earlier) and changes its weight
 column to the new weight you inputted.
 
     ### Errors & successes
@@ -100,15 +102,15 @@ mobile screen).
 jinja to loop through all the workouts I gave to index.html in the index function, and make an expandable card
 for each workout.
 
-  In the header of the card is the name of the workout and the weight of the workout. There's also
+  In the header of the card is the name of the workout and the weight of the workout. There are also
 two buttons, an edit button, and a create button. I used the col-sm thing again to keep the text on the left side
 and the buttons on the right side.
 
   I also set the font size of the text dynamically, so that long weight names don't take up so much space. I do
 this by setting the font size equal to the return value of a jinja pipe called scaleSize that I made. I used
-the ~ operator to concatenate the name of the workout and the weight of the workout, and fed it to the pipe (since
-both of them contribute to how long the text is). The ~ operator also makes the weight (which is an integer) a
-string.
+the ~ operator to concatenate the name of the workout and the weight of the workout (since both of them
+contribute to how long the text is). Then I fed it to the pipe. The ~ operator also makes the weight (which is
+an integer) a string.
 
   The buttons expand the card, but each expands it to reveal a different thing. The edit button expands the edit
 section, and the calculate button expands the calculate section. I gave the edit button a margin left of auto and
@@ -131,7 +133,7 @@ also takes the id of the workout. This is because it doesn't just calculates the
 the calculate section. It needs the id of the workout to know where to display the weights (since the cards are
 created dynamically).
 
-  Inside the calculation section is a row with two h fives and an image in between them. The image is a barbell
+  Inside the calculation section is a row with two h fives and an image in between them. The image is a barbell,
 and the h fives are where the calWeights function displays what weights to put on the bar. Notice that the
 h fives have ids that include the dynamic id of the workout in them. That's you need to input the id of the
 workout in the function.
@@ -256,3 +258,7 @@ gets all the workouts that the user has. It also has a joint index (not sure wha
 the userId and the name of the workout. This index is used alot because workout names are only unique to the user.
 If you want to find the weight of a workout, you have to not only search that has the same name as the one your
 looking for, and the same userId as the one that's logged in
+
+      ##style.css
+  Just some basic stuff. The form-control class is actually a bootstrap class. I'm just overriding parts of it. I use width auto on it
+so that the form only takes up as much space as needed.

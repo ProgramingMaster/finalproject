@@ -75,8 +75,7 @@ def index():
         # Turn weight into an integer
         weight = int(weight)
 
-        # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs). The site will crash if you
-        # click the calculate button on a workout with a weight to large (though that's more like 50,000)
+        # Ensure weight is not an enormous number (the largest deadlift is 1102 lbs).
         if weight > 1200:
             return error("Weight must not be greater than 1200")
 
@@ -230,7 +229,7 @@ def login():
         rows = db.execute("SELECT * FROM users WHERE username = :username",
                           username=request.form.get("username"))
 
-        # Ensure username exists and password is correct
+        # Ensure username exist and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
             return error("Invalid username and/or password")
 
