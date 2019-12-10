@@ -203,7 +203,7 @@ the calculate button. It checks both the left and right h fives in case somethin
 was added (I don't how this would happen, I just wanted to be carefull).
 
   It then calls weightsToAdd, which actually calculates what weights to add to the bar. Then it changes the html
-of the h fives on either side of the barbell image to what weightsToAdd returns. The weightsToAdd function
+of the h fives on each side of the barbell image to what weightsToAdd returns. The weightsToAdd function
 returns a string with br tags in it. That's why it changes the html and not the text.
 
   The calWarmup function displays what weights to add to the bar for your warmup, along with the weight of the
@@ -215,7 +215,7 @@ text of the warmupTotal h five to that. Then it calls weightsToAdd with the warm
 put on the bar for the warmup, and displays them like calWeights does except on different h fives, along with
 setting the barbell image's display to inline (from none).
 
-  Finally comes the weightsToAdd function. This function finds what weights to put on either side of the bar.
+  Finally comes the weightsToAdd function. This function finds what weights to put on each side of the bar.
 First it subtracts the weight of the bar from your weight, and if your weight if now zero or less, then it just
 returns 0 because you don't need to put any weights on the bar.
 
