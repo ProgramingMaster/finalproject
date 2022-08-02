@@ -1,5 +1,5 @@
 
-#CSLifty
+# CSLifty
   This is a barbell strength training website where you can keep track of your weights, calculate what
 weights to put on the bar, and calculate different percentages of your weight (for warmups)
 
