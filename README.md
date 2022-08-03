@@ -8,7 +8,7 @@ weights to put on the bar, and calculate different percentages of your weight (f
   You can test the app locally, on a local database, by running "flask run" on the command line
 (while in the final project folder).
 
-NOTE: This will not work without first downloaded the needed pakages detailed in requirements.txt. One of these pakages is cs50 specific. So if you're not from the university, you probably will not be able to open this project.
+NOTE: This will not work without first downloaded the needed pakages detailed in requirements.txt. One of these pakages is cs50 specific, so if you're not from the university, you probably will not be able to open this project.
 
   ### __Log in__
   When you open up the page, you will see a basic login form. The username and password can't be empty, and if you
